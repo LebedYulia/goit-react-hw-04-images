@@ -1,48 +1,63 @@
 import React from 'react';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { Searchbar, Form, Field, SearchFormButton, ButtonLabel } from './SearchForm.styled';
-
+import PropTypes from 'prop-types';
+import toast, { Toaster } from 'react-hot-toast';
+import { IoIosSearch } from 'react-icons/io';
+import { Searchbar, Form, Field, SearchFormButton } from './SearchForm.styled';
 
 const schema = yup.object().shape({
-  searchQuery: yup.string().required(),
+  inputValue: yup
+    .string()
+    .trim()
+    .required(() => toast.error('Please, enter search query!')),
 });
 
 const initialValue = {
-  searchQuery: "",
+  inputValue: '',
 };
 
-export const SearchForm = () => {
-  
-const handleSubmit = (value, { resetForm }) => {
-   console.log(value)
-  resetForm();
-};
+export const SearchForm = props => {
+  const handleSubmit = (value, { resetForm }) => {
+    props.onSubmit(value);
+    resetForm();
+  };
 
-  
-    return (
-      <Searchbar >
-        <Formik 
-        initialValues={{ initialValue }}
-        validationSchema ={{ schema }}
-        onSubmit = {handleSubmit}
-        >
-          <Form >
-          <SearchFormButton type="submit" className="button">
-            <ButtonLabel className="button-label">Search</ButtonLabel>
+  return (
+    <Searchbar>
+      <Formik
+        initialValues={initialValue}
+        validationSchema={schema}
+        onSubmit={handleSubmit}
+      >
+        <Form autoComplete="off">
+          <SearchFormButton type="submit">
+            <IoIosSearch size="1.5em" />
           </SearchFormButton>
 
-          <Field 
-          className="input"
-          type="text"
-          name="searchQuery"                    
-          placeholder="Search images and photos"
+          <Field
+            type="text"
+            name="inputValue"
+            placeholder="Search images and photos"
           />
-          <ErrorMessage name="searchQuery" />          
-          
-          </Form>
-        </Formik>
-      </Searchbar>
-    );
-  }
+          <ErrorMessage name="inputValue" />
+        </Form>
+      </Formik>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          error: {
+            duration: 3000,
+            style: {
+              border: '2px solid red',
+            },
+          },
+        }}
+      />
+    </Searchbar>
+  );
+};
 
+SearchForm.propTypes = {
+  onSubmit: PropTypes.func,
+};
