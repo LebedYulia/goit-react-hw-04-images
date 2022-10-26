@@ -3,19 +3,34 @@ import PropTypes from 'prop-types';
 import { getImageByQuery } from 'components/services/api';
 import { Gallery } from './ImageGallery.styled';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import { ButtonLoadMore } from 'components/Button/Button';
 
 export class ImageGallery extends Component {
   state = {
     images: [],
     isLoading: false,
+    page: 1,
   };
 
-  onSearch = async searchQuery => {
+  // resetState = () => {
+
+  //     this.setState({
+  //       images: [],
+  //       page: 1,
+
+  //   })
+  // }
+
+  onSearch = async () => {
     try {
+      const page = this.state.page;
+      const { searchQuery } = this.props;
+
       this.setState({ isLoading: true });
-      const data = await getImageByQuery(searchQuery);
+      const data = await getImageByQuery(searchQuery, page);
+      const { hits } = data;
       this.setState(state => ({
-        images: [...this.state.images, ...data],
+        images: [...this.state.images, ...hits],
         isLoading: false,
       }));
     } catch (error) {
@@ -23,29 +38,42 @@ export class ImageGallery extends Component {
     }
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  loadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
+
+  componentDidUpdate(prevProps, prevState)  {
     const { searchQuery } = this.props;
+    const { page } = this.state;
 
     if (prevProps.searchQuery !== searchQuery) {
-      this.onSearch(searchQuery);
+       
+      this.onSearch();
+    } else if (prevState.page !== page) {
+      this.onSearch();
     }
   }
 
   render() {
-    const { images } = this.state;    
-    
+    const { images } = this.state;
+
     return (
-      <Gallery>
-        { images.map(({ id, webformatURL, tags }) => (
-          <ImageGalleryItem key={id} 
-                            webformatURL={webformatURL} 
-                            tags={tags} />
-        ))}
-      </Gallery>
+      <div>
+        <Gallery>
+          {images.map(({ id, webformatURL, tags }) => (
+            <ImageGalleryItem
+              key={id}
+              webformatURL={webformatURL}
+              tags={tags}
+            />
+          ))}
+        </Gallery>
+        <ButtonLoadMore loadMore={this.loadMore} />
+      </div>
     );
   }
 }
 
 ImageGallery.propTypes = {
   searchQuery: PropTypes.string.isRequired,
-}
+};

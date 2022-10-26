@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from './Button.styled';
 
-
-export const ButtonLoadMore = () => {
-    return (
-        <Button type='button'>Load more</Button>
-    )
-}
+export const ButtonLoadMore = ({ loadMore }) => {
+  return (
+    <Button type="button" onClick={loadMore}>
+      Load more
+    </Button>
+  );
+};
