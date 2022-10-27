@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { IoIosSearch } from 'react-icons/io';
 import { Searchbar, Form, Field, SearchFormButton } from './SearchForm.styled';
 
@@ -42,18 +42,7 @@ export const SearchForm = props => {
           />
           <ErrorMessage name="inputValue" />
         </Form>
-      </Formik>
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          error: {
-            duration: 3000,
-            style: {
-              border: '2px solid red',
-            },
-          },
-        }}
-      />
+      </Formik>     
     </Searchbar>
   );
 };
