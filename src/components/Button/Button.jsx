@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from './Button.styled';
 
 export const ButtonLoadMore = ({ loadMore }) => {
@@ -7,4 +8,8 @@ export const ButtonLoadMore = ({ loadMore }) => {
       Load more
     </Button>
   );
+};
+
+ButtonLoadMore.propTypes = {
+  loadMore: PropTypes.func.isRequired,
 };

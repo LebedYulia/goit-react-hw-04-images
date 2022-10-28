@@ -7,14 +7,24 @@ import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { Wrapper } from './App.styled';
 import { getImageByQuery } from 'components/services/api';
 import { ButtonLoadMore } from 'components/Button/Button';
+import { Modal } from 'components/Modal/Modal';
 
 export class App extends Component {
   state = {
     searchQuery: '',
     images: [],
     isLoading: false,
-    page: 1,    
+    page: 1,
+    largeImageSrc: '',   
   };
+
+  componentDidUpdate(_, prevState) {
+    const { searchQuery, page } = this.state;
+
+    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
+      this.onSearch();
+    }
+  }
 
   handleSearchFormSubmit = ({ inputValue }) => {
     this.setState({
@@ -49,23 +59,28 @@ export class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  componentDidUpdate(_, prevState) {
-    const { searchQuery, page } = this.state;
-
-    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
-      this.onSearch();
-    }
+  onOpenModal = (e) => {
+    this.setState({ largeImageSrc: e.target.dataset.sourse })
   }
 
+  onCloseModal = (e) => {
+    this.setState({ largeImageSrc: '' })
+  }
+
+ 
+
   render() {
-    const { images, isLoading } = this.state;
+    const { images, isLoading, largeImageSrc } = this.state;
+    
 
     return (
       <Wrapper>
-        <SearchForm onSubmit={this.handleSearchFormSubmit} />
-        {isLoading && <ThreeDots color="red" />}
-        <ImageGallery images={this.state.images}></ImageGallery>
+        <SearchForm onSubmit={this.handleSearchFormSubmit} />        
+        <ImageGallery images={images} onOpenModal={this.onOpenModal}></ImageGallery>
         {images.length >= 12 && <ButtonLoadMore loadMore={this.loadMore} />}
+        {isLoading && <ThreeDots color="red" />}
+        {largeImageSrc.length > 0 && <Modal largeImageURL={largeImageSrc} onCloseModal={this.onCloseModal}/>}
+
         <Toaster
           position="top-right"
           toastOptions={{
