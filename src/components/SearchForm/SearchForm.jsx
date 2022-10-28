@@ -19,6 +19,7 @@ const initialValue = {
 
 export const SearchForm = props => {
   const handleSubmit = (value, { resetForm }) => {
+    console.log(value)
     props.onSubmit(value);
     resetForm();
   };
