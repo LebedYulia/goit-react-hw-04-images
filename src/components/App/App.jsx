@@ -26,6 +26,10 @@ export class App extends Component {
   }
 
   handleSearchFormSubmit = ({ inputValue }) => {
+    if (inputValue === this.state.searchQuery) {
+      return
+    }
+    
     this.setState({
       searchQuery: inputValue,
       images: [],

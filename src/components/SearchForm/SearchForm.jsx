@@ -7,10 +7,7 @@ import { IoIosSearch } from 'react-icons/io';
 import { Searchbar, Form, Field, SearchFormButton } from './SearchForm.styled';
 
 const schema = yup.object().shape({
-  inputValue: yup
-    .string()
-    .trim()
-    .required(() => toast.error('Please, enter search query!')),
+  inputValue: yup.string().required(),
 });
 
 const initialValue = {
@@ -18,10 +15,12 @@ const initialValue = {
 };
 
 export const SearchForm = props => {
-  const handleSubmit = (value, { resetForm }) => {
-    console.log(value)
+  const handleSubmit = value => {
+    if (value.inputValue.trim() === '') {
+      toast.error('Please, enter search query!');
+      return;
+    }
     props.onSubmit(value);
-    resetForm();
   };
 
   return (
@@ -43,7 +42,7 @@ export const SearchForm = props => {
           />
           <ErrorMessage name="inputValue" />
         </Form>
-      </Formik>     
+      </Formik>
     </Searchbar>
   );
 };

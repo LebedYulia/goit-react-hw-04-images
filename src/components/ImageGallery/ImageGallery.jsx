@@ -6,7 +6,7 @@ export const ImageGallery = ({ images, onOpenModal }) => {
   return (
     <Gallery>
       {images.map(({ id, webformatURL, largeImageURL, tags }) => (
-        <ImageGalleryItem 
+        <ImageGalleryItem
           key={id}
           webformatURL={webformatURL}
           largeImageURL={largeImageURL}
@@ -19,7 +19,10 @@ export const ImageGallery = ({ images, onOpenModal }) => {
 };
 
 ImageGallery.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onOpenModal:  PropTypes.func.isRequired,
-  children: PropTypes.node,
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  onOpenModal: PropTypes.func.isRequired,
 };
