@@ -4,25 +4,19 @@ import PropTypes from 'prop-types';
 import { Overlay, ModalImage } from './Modal.styled';
 
 export const Modal = ({ largeImageURL, onCloseModal }) => {
-
   useEffect(() => {
-
     const handleKeyDown = e => {
       if (e.code === 'Escape') {
         onCloseModal();
       }
     };
-    
-    console.log("handle")
+
     window.addEventListener('keydown', handleKeyDown);
-    
+
     return () => {
-      console.log("snim")
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onCloseModal]);
-
- 
+  });
 
   const handleOverlay = e => {
     if (e.currentTarget === e.target) {

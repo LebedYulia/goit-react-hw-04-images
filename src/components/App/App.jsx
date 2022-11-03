@@ -3,10 +3,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { ThreeDots } from 'react-loader-spinner';
 import { SearchForm } from 'components/SearchForm/SearchForm';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
-import { Wrapper } from './App.styled';
 import { getImageByQuery } from 'components/services/api';
 import { ButtonLoadMore } from 'components/Button/Button';
 import { Modal } from 'components/Modal/Modal';
+import { Wrapper } from './App.styled';
 
 export const App = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,8 +16,7 @@ export const App = () => {
   const [largeImageSrc, setLargeImageSrc] = useState('');
 
   useEffect(() => {
-    if (!searchQuery) {
-      console.log('app', Date.now());
+    if (searchQuery === "") {      
       return;
     }
 

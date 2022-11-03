@@ -16,7 +16,8 @@ const initialValue = {
 
 export const SearchForm = props => {
   const handleSubmit = value => {
-    if (!value.inputValue.trim()) {      
+    
+    if (value.inputValue.trim() === "") {      
       toast.error('Please, enter search query!');
       return;
     }
