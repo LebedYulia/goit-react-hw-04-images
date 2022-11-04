@@ -7,7 +7,7 @@ import { IoIosSearch } from 'react-icons/io';
 import { Searchbar, Form, Field, SearchFormButton } from './SearchForm.styled';
 
 const schema = yup.object().shape({
-  inputValue: yup.string().required(),
+  inputValue: yup.string(),
 });
 
 const initialValue = {
