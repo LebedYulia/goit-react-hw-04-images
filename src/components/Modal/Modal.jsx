@@ -16,7 +16,7 @@ export const Modal = ({ largeImageURL, onCloseModal }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  });
+  }, [onCloseModal]);
 
   const handleOverlay = e => {
     if (e.currentTarget === e.target) {
